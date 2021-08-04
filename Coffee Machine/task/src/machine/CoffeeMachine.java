@@ -3,35 +3,22 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
-    static int currentWater = 400;
-    static int currentMilk = 540;
-    static int currentCoffee = 120;
-    static int disposableCups = 9;
-    private static int currentEarnings = 550;
+    private int currentWater;
+    private int currentMilk;
+    private int currentCoffee;
+    private int disposableCups;
+    private int currentEarnings;
 
-
-    private static final Scanner scanner = new Scanner(System.in);
-
-
-    public static void main(String[] args) {
-        displayCoffeeMachineStatus();
-
-        System.out.println("\nWrite action (buy, fill, take):");
-        String action = scanner.nextLine();
-
-        if (action.equals("buy")) {
-            processActionBuy();
-        } else if (action.equals("fill")) {
-            processActionFill();
-        } else if (action.equals("take")) {
-            processActionTake();
-        }
-
-        displayCoffeeMachineStatus();
+    public CoffeeMachine(int currentWater, int currentMilk, int currentCoffee, int disposableCups, int currentEarnings) {
+        this.currentWater = currentWater;
+        this.currentMilk = currentMilk;
+        this.currentCoffee = currentCoffee;
+        this.disposableCups = disposableCups;
+        this.currentEarnings = currentEarnings;
     }
 
 
-    private static void displayCoffeeMachineStatus() {
+    private void printCoffeeMachineStatus() {
         System.out.println("\nThe coffee machine has: ");
         System.out.printf("%d ml of water\n", currentWater);
         System.out.printf("%d ml of milk\n", currentMilk);
@@ -40,7 +27,50 @@ public class CoffeeMachine {
         System.out.printf("$%d of money\n", currentEarnings);
     }
 
-    private static void processActionBuy() {
+    private boolean canMakeCoffeeCup(CoffeeCup c) {
+        return currentWater >= c.getWaterNeeded() &&
+                currentMilk >= c.getMilkNeeded() &&
+                currentCoffee >= c.getCoffeeNeeded() &&
+                disposableCups > 0;
+    }
+
+    private void makeCoffeeCup(CoffeeCup c) {
+        currentWater -= c.getWaterNeeded();
+        currentMilk -= c.getMilkNeeded();
+        currentCoffee -= c.getCoffeeNeeded();
+        disposableCups --;
+        currentEarnings += c.getCost();
+    }
+
+
+
+
+    /// static methods for main process
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        CoffeeMachine machine = new CoffeeMachine(400, 540, 120, 9, 550);
+
+        machine.printCoffeeMachineStatus();
+
+        System.out.println("\nWrite action (buy, fill, take):");
+        String action = scanner.nextLine();
+
+        if (action.equals("buy")) {
+            processActionBuy(machine);
+        } else if (action.equals("fill")) {
+            processActionFill(machine);
+        } else if (action.equals("take")) {
+            processActionTake(machine);
+        }
+
+        machine.printCoffeeMachineStatus();
+    }
+
+
+
+    private static void processActionBuy(CoffeeMachine machine) {
         System.out.print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: \n> ");
         int coffeeType = scanner.nextInt();
         CoffeeCup c = null;
@@ -56,33 +86,30 @@ public class CoffeeMachine {
         if (c == null) {
             System.out.println("Not correct number");
         } else {
-            if (currentWater < c.getWaterNeeded() || currentMilk < c.getMilkNeeded()
-                    || currentCoffee < c.getCoffeeNeeded() || disposableCups == 0) {
+            if(!machine.canMakeCoffeeCup(c)) {
                 System.out.println("There is not enough ingredients to make a coffee. Please fill the coffee machine!");
             } else {
-                currentWater -= c.getWaterNeeded();
-                currentMilk -= c.getMilkNeeded();
-                currentCoffee -= c.getCoffeeNeeded();
-                currentEarnings += c.getCost();
-                disposableCups--;
+                machine.makeCoffeeCup(c);
+
             }
         }
     }
 
-    private static void processActionFill() {
+
+    private static void processActionFill(CoffeeMachine machine) {
         System.out.print("Write how many ml of water the coffee machine you want to add:  \n> ");
-        currentWater = currentWater + scanner.nextInt();
+        machine.currentWater = machine.currentWater + scanner.nextInt();
         System.out.print("Write how many ml of milk the coffee machine you want to add:  \n> ");
-        currentMilk = currentMilk + scanner.nextInt();
+        machine.currentMilk = machine.currentMilk + scanner.nextInt();
         System.out.print("Write how many grams of coffee beans the coffee machine you want to add: \n> ");
-        currentCoffee = currentCoffee + scanner.nextInt();
+        machine.currentCoffee = machine.currentCoffee + scanner.nextInt();
         System.out.print("Write how many disposable cups of coffee you want to add: \n> ");
-        disposableCups += scanner.nextInt();
+        machine.disposableCups += scanner.nextInt();
     }
 
-    private static void processActionTake() {
-        System.out.println("I gave you $" + currentEarnings);
-        currentEarnings = 0;
+    private static void processActionTake(CoffeeMachine machine) {
+        System.out.println("I gave you $" + machine.currentEarnings);
+        machine.currentEarnings = 0;
     }
 
 }
