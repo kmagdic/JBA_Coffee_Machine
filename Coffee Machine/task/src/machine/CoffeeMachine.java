@@ -38,11 +38,9 @@ public class CoffeeMachine {
         currentWater -= c.getWaterNeeded();
         currentMilk -= c.getMilkNeeded();
         currentCoffee -= c.getCoffeeNeeded();
-        disposableCups --;
+        disposableCups--;
         currentEarnings += c.getCost();
     }
-
-
 
 
     /// static methods for main process
@@ -57,44 +55,48 @@ public class CoffeeMachine {
         System.out.println("\nWrite action (buy, fill, take):");
         String action = scanner.nextLine();
 
-        if (action.equals("buy")) {
-            processActionBuy(machine);
-        } else if (action.equals("fill")) {
-            processActionFill(machine);
-        } else if (action.equals("take")) {
-            processActionTake(machine);
+        switch (action) {
+            case "buy":
+                processActionBuy(machine);
+                break;
+            case "fill":
+                processActionFill(machine);
+                break;
+            case "take":
+                processActionTake(machine);
+                break;
         }
 
         machine.printCoffeeMachineStatus();
     }
 
 
-
     private static void processActionBuy(CoffeeMachine machine) {
+        CoffeeCup c;
         System.out.print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: \n> ");
-        int coffeeType = scanner.nextInt();
-        CoffeeCup c = null;
 
-        if(coffeeType == 1)
-            c = new CoffeeCup(250, 0, 16, 4);
-        else if(coffeeType == 2)
-            c = new CoffeeCup(350, 75, 20, 7);
-        else if(coffeeType == 3)
-            c = new CoffeeCup(200, 100, 12, 6);
+        switch (scanner.nextInt()) {
+            case 1:
+                c = new CoffeeCup(250, 0, 16, 4);
+                break;
+            case 2:
+                c = new CoffeeCup(350, 75, 20, 7);
+                break;
+            case 3:
+                c = new CoffeeCup(200, 100, 12, 6);
+                break;
+            default:
+                System.out.println("Number entered is not correct!");
+                return;
+        }
 
 
-        if (c == null) {
-            System.out.println("Not correct number");
+        if (!machine.canMakeCoffeeCup(c)) {
+            System.out.println("There is not enough ingredients to make a coffee. Please fill the coffee machine!");
         } else {
-            if(!machine.canMakeCoffeeCup(c)) {
-                System.out.println("There is not enough ingredients to make a coffee. Please fill the coffee machine!");
-            } else {
-                machine.makeCoffeeCup(c);
-
-            }
+            machine.makeCoffeeCup(c);
         }
     }
-
 
     private static void processActionFill(CoffeeMachine machine) {
         System.out.print("Write how many ml of water the coffee machine you want to add:  \n> ");

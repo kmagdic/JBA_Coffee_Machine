@@ -19,17 +19,13 @@ public class CoffeeCup {
         return waterNeeded;
     }
 
-
-
     public int getMilkNeeded() {
         return milkNeeded;
     }
 
-
     public int getCoffeeNeeded() {
         return coffeeNeeded;
     }
-
 
     public int getCost() {
         return cost;
