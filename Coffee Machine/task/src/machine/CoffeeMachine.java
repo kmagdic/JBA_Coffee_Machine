@@ -17,7 +17,6 @@ public class CoffeeMachine {
         this.currentEarnings = currentEarnings;
     }
 
-
     private void printCoffeeMachineStatus() {
         System.out.println("\nThe coffee machine has: ");
         System.out.printf("%d ml of water\n", currentWater);
@@ -50,24 +49,29 @@ public class CoffeeMachine {
     public static void main(String[] args) {
         CoffeeMachine machine = new CoffeeMachine(400, 540, 120, 9, 550);
 
-        machine.printCoffeeMachineStatus();
+        do {
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
 
-        System.out.println("\nWrite action (buy, fill, take):");
-        String action = scanner.nextLine();
+            String action = scanner.nextLine();
 
-        switch (action) {
-            case "buy":
-                processActionBuy(machine);
-                break;
-            case "fill":
-                processActionFill(machine);
-                break;
-            case "take":
-                processActionTake(machine);
-                break;
-        }
+            switch (action) {
+                case "remaining":
+                    machine.printCoffeeMachineStatus();
+                    break;
+                case "buy":
+                    processActionBuy(machine);
+                    break;
+                case "fill":
+                    processActionFill(machine);
+                    break;
+                case "take":
+                    processActionTake(machine);
+                    break;
+                case "exit":
+                    System.exit(0);
+            }
 
-        machine.printCoffeeMachineStatus();
+        } while(true);
     }
 
 
@@ -75,7 +79,13 @@ public class CoffeeMachine {
         CoffeeCup c;
         System.out.print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: \n> ");
 
-        switch (scanner.nextInt()) {
+        String action = scanner.nextLine();
+        if(action.equals("back")) {
+            return;
+        }
+        int actionInt = Integer.parseInt(action);
+
+        switch (actionInt) {
             case 1:
                 c = new CoffeeCup(250, 0, 16, 4);
                 break;
@@ -94,6 +104,7 @@ public class CoffeeMachine {
         if (!machine.canMakeCoffeeCup(c)) {
             System.out.println("There is not enough ingredients to make a coffee. Please fill the coffee machine!");
         } else {
+            System.out.println("I have enough resources, making you a coffee!");
             machine.makeCoffeeCup(c);
         }
     }
