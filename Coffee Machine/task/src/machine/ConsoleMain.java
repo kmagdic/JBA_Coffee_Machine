@@ -2,7 +2,7 @@ package machine;
 
 import java.util.Scanner;
 
-public class Main {
+public class ConsoleMain {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -15,7 +15,7 @@ public class Main {
 
             switch (action) {
                 case "remaining":
-                    machine.printCoffeeMachineStatus();
+                    printCoffeeMachineStatus(machine);
                     break;
                 case "buy":
                     processActionBuy(machine);
@@ -81,5 +81,14 @@ public class Main {
     private static void processActionTake(CoffeeMachine machine) {
         System.out.println("I gave you $" + machine.getCurrentEarnings());
         machine.setCurrentEarnings(0);
+    }
+
+    private static void printCoffeeMachineStatus(CoffeeMachine machine) {
+        System.out.println("\nThe coffee machine has: ");
+        System.out.printf("%d ml of water\n", machine.getCurrentWater());
+        System.out.printf("%d ml of milk\n", machine.getCurrentMilk());
+        System.out.printf("%d ml of coffee beans\n", machine.getCurrentCoffee());
+        System.out.printf("%d disposable cups\n", machine.getDisposableCups());
+        System.out.printf("$%d of money\n", machine.getDisposableCups());
     }
 }

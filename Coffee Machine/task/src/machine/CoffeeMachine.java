@@ -17,14 +17,7 @@ public class CoffeeMachine {
         this.currentEarnings = currentEarnings;
     }
 
-    public void printCoffeeMachineStatus() {
-        System.out.println("\nThe coffee machine has: ");
-        System.out.printf("%d ml of water\n", currentWater);
-        System.out.printf("%d ml of milk\n", currentMilk);
-        System.out.printf("%d ml of coffee beans\n", currentCoffee);
-        System.out.printf("%d disposable cups\n", disposableCups);
-        System.out.printf("$%d of money\n", currentEarnings);
-    }
+
 
     public boolean canMakeCoffeeCup(CoffeeCup c) {
         return currentWater >= c.getWaterNeeded() &&
@@ -38,8 +31,10 @@ public class CoffeeMachine {
         currentMilk -= c.getMilkNeeded();
         currentCoffee -= c.getCoffeeNeeded();
         disposableCups--;
+
         currentEarnings += c.getCost();
     }
+
 
     public int getCurrentWater() {
         return currentWater;
