@@ -75,4 +75,15 @@ public class CoffeeMachine {
     public void setCurrentEarnings(int currentEarnings) {
         this.currentEarnings = currentEarnings;
     }
+
+    @Override
+    public String toString() {
+        return "CoffeeMachine{" +
+                "currentWater=" + currentWater +
+                ", currentMilk=" + currentMilk +
+                ", currentCoffee=" + currentCoffee +
+                ", disposableCups=" + disposableCups +
+                ", currentEarnings=" + currentEarnings +
+                '}';
+    }
 }
